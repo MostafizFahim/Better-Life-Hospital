@@ -36,8 +36,8 @@ public class Login extends javax.swing.JFrame {
     public void Connect()
     {
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/betterlifehospital","root","");
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            con = DriverManager.getConnection(System.getProperty("db.url", "jdbc:mysql://localhost:3306/betterlifehospital?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"), System.getProperty("db.user", "root"), System.getProperty("db.password", "root"));
             
             
         } catch (ClassNotFoundException ex) {
@@ -138,6 +138,11 @@ public class Login extends javax.swing.JFrame {
         
         
         try {
+            if (con == null) {
+                JOptionPane.showMessageDialog(this, "Database connection is not available. Please import betterlifehospital.sql and check the database credentials.");
+                return;
+            }
+
             pst = con.prepareStatement("select * from user where username= ? and password = ? and utype =?");
             pst.setString(1, username);
             pst.setString(2, password);

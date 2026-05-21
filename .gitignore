@@ -1,0 +1,6 @@
+/dist/
+/build/classes/*.class
+/build/test/
+/build/generated/
+/build/generated-sources/
+*.log
