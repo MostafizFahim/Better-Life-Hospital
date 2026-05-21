@@ -33,7 +33,7 @@ The app defaults to:
 - Host: `localhost`
 - Port: `3306`
 - User: `root`
-- Password: empty
+- Password: `root`
 
 To use different credentials, set environment variables before running:
 

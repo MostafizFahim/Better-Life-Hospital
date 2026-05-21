@@ -13,6 +13,6 @@ $classpath = @(
 
 $dbUrl = if ($env:BLH_DB_URL) { $env:BLH_DB_URL } else { "jdbc:mysql://localhost:3306/betterlifehospital?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC" }
 $dbUser = if ($env:BLH_DB_USER) { $env:BLH_DB_USER } else { "root" }
-$dbPassword = if ($env:BLH_DB_PASSWORD) { $env:BLH_DB_PASSWORD } else { "" }
+$dbPassword = if ($env:BLH_DB_PASSWORD) { $env:BLH_DB_PASSWORD } else { "root" }
 
 & java "-Ddb.url=$dbUrl" "-Ddb.user=$dbUser" "-Ddb.password=$dbPassword" -cp $classpath Login

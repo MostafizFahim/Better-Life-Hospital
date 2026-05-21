@@ -129,7 +129,7 @@ public class Channel extends javax.swing.JFrame {
     {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection(System.getProperty("db.url", "jdbc:mysql://localhost:3306/betterlifehospital?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"), System.getProperty("db.user", "root"), System.getProperty("db.password", ""));
+            con = DriverManager.getConnection(System.getProperty("db.url", "jdbc:mysql://localhost:3306/betterlifehospital?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"), System.getProperty("db.user", "root"), System.getProperty("db.password", "root"));
             
             
         } catch (ClassNotFoundException ex) {
