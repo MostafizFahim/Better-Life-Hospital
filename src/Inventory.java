@@ -1,5 +1,5 @@
 
-import com.sun.glass.events.KeyEvent;
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -56,8 +56,8 @@ public class Inventory extends javax.swing.JFrame {
     public void Connect()
     {
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/betterlifehospital","root","");
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            con = DriverManager.getConnection(System.getProperty("db.url", "jdbc:mysql://localhost:3306/betterlifehospital?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"), System.getProperty("db.user", "root"), System.getProperty("db.password", ""));
             
             
         } catch (ClassNotFoundException ex) {
