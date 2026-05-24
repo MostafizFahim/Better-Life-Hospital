@@ -479,7 +479,11 @@ public class Channel extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-       
+        if (jTable1.getSelectedRow() == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a channel first.");
+            return;
+        }
+        
         try {
             pst = con.prepareStatement("delete from channel where channelno = ?");
             pst.setString(1, chno);

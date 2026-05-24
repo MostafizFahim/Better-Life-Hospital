@@ -26,6 +26,8 @@ public class Prescription extends javax.swing.JFrame {
      */
     public Prescription() {
         initComponents();
+        Connect();
+        AutoID();
     }
     
     String id;

@@ -31,6 +31,7 @@ public class Inventory extends javax.swing.JFrame {
      */
     public Inventory() {
         initComponents();
+        Connect();
     }
     String pnoo;
     
@@ -79,10 +80,10 @@ public class Inventory extends javax.swing.JFrame {
         String pay = txtpay.getText();
         String balance = txtbal.getText();
         
-        int lastinsertid = 0;
-        
-        
         try {
+            con.setAutoCommit(false);
+            int lastinsertid = 0;
+
             String query = "insert into sales(date,subtotal,pay,balance) values(?,?,?,?)";
             pst = con.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
             pst.setString(1, date);
@@ -99,54 +100,53 @@ public class Inventory extends javax.swing.JFrame {
                 lastinsertid = rs.getInt(1);
             }
             
-            int rows = jTable1.getColumnCount();
-            
             String query1 = "insert into sale_product(sales_id,prod_id,sellprice,qty,total)values(?,?,?,?,?)";
-            pst = con.prepareStatement(query1);
-            String pres_id;
-            String item_id;
-            String item_name;
-            String price;
-            String qty;
-            int total=0;
+            PreparedStatement productPst = con.prepareStatement(query1);
+            PreparedStatement stockPst = con.prepareStatement("update item set qty = qty - ? where itemid = ?");
             
             for(int i=0; i<jTable1.getRowCount(); i++)
             {
-                pres_id = (String)jTable1.getValueAt(i, 0);
-                item_id = (String)jTable1.getValueAt(i, 1); 
-                
-                
-                
-                qty = jTable1.getValueAt(i, 3).toString();
+                String item_id = jTable1.getValueAt(i, 1).toString();
+                String qty = jTable1.getValueAt(i, 3).toString();
                 int qty1 = Integer.parseInt(qty);
-                
-                
-                price = (String)jTable1.getValueAt(i, 4);
-                total = (int)jTable1.getValueAt(i, 5);
-                
-                
-                
-                pst.setInt(1,lastinsertid);
-                pst.setString(2,item_id);
-                pst.setString(3,price);
-                pst.setInt(4,qty1);      
-                pst.setInt(5,total);
-                 
-                pst.executeUpdate();
-                
-                JOptionPane.showMessageDialog(this, "Record Addedd");
-                 
-                 
-                
-                
+                int price = Integer.parseInt(jTable1.getValueAt(i, 4).toString());
+                int total = Integer.parseInt(jTable1.getValueAt(i, 5).toString());
+
+                productPst.setInt(1,lastinsertid);
+                productPst.setString(2,item_id);
+                productPst.setInt(3,price);
+                productPst.setInt(4,qty1);
+                productPst.setInt(5,total);
+                productPst.executeUpdate();
+
+                stockPst.setInt(1, qty1);
+                stockPst.setString(2, item_id);
+                stockPst.executeUpdate();
             }
-            
-            
-        } catch (SQLException ex) {
+
+            con.commit();
+            JOptionPane.showMessageDialog(this, "Sale recorded");
+            DefaultTableModel df = (DefaultTableModel)jTable1.getModel();
+            df.setRowCount(0);
+            txtcost.setText("");
+            txtpay.setText("");
+            txtbal.setText("");
+            txtcode.requestFocus();
+        } catch (SQLException | NumberFormatException ex) {
+            try {
+                con.rollback();
+            } catch (SQLException rollbackEx) {
+                Logger.getLogger(Inventory.class.getName()).log(Level.SEVERE, null, rollbackEx);
+            }
             Logger.getLogger(Inventory.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "Sale could not be recorded. Please check the item and payment details.");
+        } finally {
+            try {
+                con.setAutoCommit(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(Inventory.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-        
-        
     }
             
 

@@ -436,6 +436,10 @@ public class Item extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        if (jTable1.getSelectedRow() == -1) {
+            JOptionPane.showMessageDialog(this, "Please select an item first.");
+            return;
+        }
         
         String itemname = txtname.getText();
         String itemdes = txtdes.getText();
@@ -493,6 +497,10 @@ public class Item extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
+        if (jTable1.getSelectedRow() == -1) {
+            JOptionPane.showMessageDialog(this, "Please select an item first.");
+            return;
+        }
          
          String itemno = lblitemid.getText();
         
@@ -552,7 +560,7 @@ public class Item extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Patient().setVisible(true);
+                new Item().setVisible(true);
             }
         });
     }

@@ -412,6 +412,10 @@ public class Patient extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        if (jTable1.getSelectedRow() == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a patient first.");
+            return;
+        }
         
         String pname = txtpname.getText();
         String phone = txtphone.getText();
@@ -449,6 +453,10 @@ public class Patient extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
+        if (jTable1.getSelectedRow() == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a patient first.");
+            return;
+        }
         
         String pno = lblpno.getText();
         

@@ -28,6 +28,8 @@ public class ViewChannel1 extends javax.swing.JFrame {
      */
     public ViewChannel1() {
         initComponents();
+        Connect();
+        Channel_table();
     }
     
     int id;

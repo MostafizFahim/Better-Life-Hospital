@@ -52,7 +52,7 @@ public class Report extends javax.swing.JFrame {
          public void Sales_table()
     {
         try {
-            pst = con.prepareStatement("select * from sales");
+            pst = con.prepareStatement("select id,date,subtotal,pay,balance from sales order by id desc");
             
             
             rs = pst.executeQuery();
@@ -68,15 +68,11 @@ public class Report extends javax.swing.JFrame {
         {
             Vector v2 = new Vector();
             
-            for(int i = 1;i<=c;i++)
-            {
             v2.add(rs.getString("id"));
-            v2.add(rs.getString("data"));
+            v2.add(rs.getString("date"));
             v2.add(rs.getString("subtotal"));
             v2.add(rs.getString("pay")); 
             v2.add(rs.getString("balance"));
-            
-            }
             df.addRow(v2);
            
             

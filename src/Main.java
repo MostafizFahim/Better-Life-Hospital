@@ -93,9 +93,10 @@ public class Main extends javax.swing.JFrame {
            jButton4.setVisible(true);
            jButton5.setVisible(true);
            jButton6.setVisible(true);
-           jButton7.setVisible(true);
-           jButton8.setVisible(true);
-           jButton9.setVisible(true);
+          jButton7.setVisible(true);
+          jButton8.setVisible(true);
+          jButton9.setVisible(true);
+          jButton10.setVisible(true);
           }
         
         
