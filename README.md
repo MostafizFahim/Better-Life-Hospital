@@ -210,6 +210,8 @@ Enter your MySQL password when asked.
 
 This will import the database from the SQL file.
 
+Do not run this command inside the `mysql>` monitor prompt. If you are already inside MySQL, type `exit;` first, then run the import command from PowerShell or CMD.
+
 ### Step 3: Login to MySQL
 
 Run:
@@ -523,6 +525,8 @@ If `betterlifehospital` is missing, import the SQL file again:
 ```powershell
 mysql -u root -p < betterlifehospital.sql
 ```
+
+This import command must be run from PowerShell or CMD, not from inside the `mysql>` prompt.
 
 ---
 
