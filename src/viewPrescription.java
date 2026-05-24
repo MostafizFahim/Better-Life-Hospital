@@ -222,6 +222,11 @@ public class viewPrescription extends javax.swing.JFrame {
         // TODO add your handling code here:
         DefaultTableModel d1 = (DefaultTableModel)jTable1.getModel();
         int SelectedIndex = jTable1.getSelectedRow();
+
+        if (SelectedIndex == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a prescription first.");
+            return;
+        }
         
         String pid = d1.getValueAt(SelectedIndex,0).toString();
         

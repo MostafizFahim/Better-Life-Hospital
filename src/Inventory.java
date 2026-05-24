@@ -70,7 +70,7 @@ public class Inventory extends javax.swing.JFrame {
     
     public void sales()
     {
-        DateTimeFormatter daa = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        DateTimeFormatter daa = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDateTime now = LocalDateTime.now();
         String date = daa.format(now);
         
@@ -437,7 +437,7 @@ public class Inventory extends javax.swing.JFrame {
                 int tot = sellprice * qty;
                 
                 
-                if(qty >= currentqty )
+                if(qty > currentqty )
                 {
                     JOptionPane.showMessageDialog(this, "Avaliable Item" + currentqty);
                     JOptionPane.showMessageDialog(this, "Qty not Enough");
@@ -490,15 +490,27 @@ public class Inventory extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         
-        int pay = (Integer.parseInt(txtpay.getText()));
-        int totcost = (Integer.parseInt(txtcost.getText()));
-        
-        int bal = pay - totcost;
-        
-        
-        txtbal.setText(String.valueOf(bal));
-        
-       //sales();
+        if (jTable1.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(this, "Please add at least one item before updating sales.");
+            return;
+        }
+
+        if (txtpay.getText().trim().isEmpty() || txtcost.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter payment amount.");
+            return;
+        }
+
+        try {
+            int pay = Integer.parseInt(txtpay.getText().trim());
+            int totcost = Integer.parseInt(txtcost.getText().trim());
+
+            int bal = pay - totcost;
+            txtbal.setText(String.valueOf(bal));
+
+            sales();
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Payment amount must be a valid number.");
+        }
         
     }//GEN-LAST:event_jButton2ActionPerformed
 

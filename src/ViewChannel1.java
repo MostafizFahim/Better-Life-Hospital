@@ -32,12 +32,18 @@ public class ViewChannel1 extends javax.swing.JFrame {
     
     int id;
     int newid;
+    String usertype;
    
     
     public ViewChannel1(int id) {
+        this(id, "Doctor");
+    }
+
+    public ViewChannel1(int id, String utype) {
         initComponents();
         
         this.id=id;
+        this.usertype = utype;
         
         newid =id;
         Connect();
@@ -69,8 +75,16 @@ public class ViewChannel1 extends javax.swing.JFrame {
          public void Channel_table()
     {
         try {
-            pst = con.prepareStatement("select channel.channelno,doctor.name,patient.name,channel.roomno,channel.date from doctor INNER JOIN channel on channel.doctorname = doctor.doctorno INNER JOIN patient on channel.patientname = patient.patientno where doctor.log_id = ?");
-            pst.setInt(1, newid);
+            String query = "select channel.channelno,doctor.name,patient.name,channel.roomno,channel.date from doctor INNER JOIN channel on channel.doctorname = doctor.doctorno INNER JOIN patient on channel.patientname = patient.patientno";
+
+            if ("Doctor".equals(usertype)) {
+                query += " where doctor.log_id = ?";
+            }
+
+            pst = con.prepareStatement(query);
+            if ("Doctor".equals(usertype)) {
+                pst.setInt(1, newid);
+            }
             
             rs = pst.executeQuery();
         
@@ -216,6 +230,11 @@ public class ViewChannel1 extends javax.swing.JFrame {
         // TODO add your handling code here:
         DefaultTableModel d1 = (DefaultTableModel) jTable1.getModel();
         int selectedIndex = jTable1.getSelectedRow();
+
+        if (selectedIndex == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a channel first.");
+            return;
+        }
         
         String chno = d1.getValueAt(selectedIndex, 0).toString();
         String docname = d1.getValueAt(selectedIndex, 1).toString();

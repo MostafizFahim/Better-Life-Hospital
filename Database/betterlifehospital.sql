@@ -124,6 +124,7 @@ INSERT INTO `patient` (`patientno`, `name`, `phone`, `address`) VALUES
 ('PS001', 'Shamim', 1785227997, '(Ca patient)Hatirjil,Dhaka'),
 ('PS002', 'Habib', 1683447997, '(Ca patient)Rampura,Dhaka'),
 ('PS003', 'Fahim', 1854665224, '(All patient) Rampura,Dhaka'),
+('PS004', 'Rafi', 1765442158, '(Der patient) Mohakhali,Dhaka'),
 ('PS005', 'Nimu', 1854662154, '(Gy patient) Bonani ,Dhaka'),
 ('PS006', 'Alvi', 1865442158, '(Ca patient) Gulsan,Dhaka');
 
