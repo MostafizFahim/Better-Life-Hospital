@@ -31,6 +31,7 @@ public class Inventory extends javax.swing.JFrame {
      */
     public Inventory() {
         initComponents();
+        Connect();
     }
     String pnoo;
     
@@ -70,7 +71,7 @@ public class Inventory extends javax.swing.JFrame {
     
     public void sales()
     {
-        DateTimeFormatter daa = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        DateTimeFormatter daa = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDateTime now = LocalDateTime.now();
         String date = daa.format(now);
         
@@ -79,10 +80,10 @@ public class Inventory extends javax.swing.JFrame {
         String pay = txtpay.getText();
         String balance = txtbal.getText();
         
-        int lastinsertid = 0;
-        
-        
         try {
+            con.setAutoCommit(false);
+            int lastinsertid = 0;
+
             String query = "insert into sales(date,subtotal,pay,balance) values(?,?,?,?)";
             pst = con.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
             pst.setString(1, date);
@@ -99,54 +100,53 @@ public class Inventory extends javax.swing.JFrame {
                 lastinsertid = rs.getInt(1);
             }
             
-            int rows = jTable1.getColumnCount();
-            
             String query1 = "insert into sale_product(sales_id,prod_id,sellprice,qty,total)values(?,?,?,?,?)";
-            pst = con.prepareStatement(query1);
-            String pres_id;
-            String item_id;
-            String item_name;
-            String price;
-            String qty;
-            int total=0;
+            PreparedStatement productPst = con.prepareStatement(query1);
+            PreparedStatement stockPst = con.prepareStatement("update item set qty = qty - ? where itemid = ?");
             
             for(int i=0; i<jTable1.getRowCount(); i++)
             {
-                pres_id = (String)jTable1.getValueAt(i, 0);
-                item_id = (String)jTable1.getValueAt(i, 1); 
-                
-                
-                
-                qty = jTable1.getValueAt(i, 3).toString();
+                String item_id = jTable1.getValueAt(i, 1).toString();
+                String qty = jTable1.getValueAt(i, 3).toString();
                 int qty1 = Integer.parseInt(qty);
-                
-                
-                price = (String)jTable1.getValueAt(i, 4);
-                total = (int)jTable1.getValueAt(i, 5);
-                
-                
-                
-                pst.setInt(1,lastinsertid);
-                pst.setString(2,item_id);
-                pst.setString(3,price);
-                pst.setInt(4,qty1);      
-                pst.setInt(5,total);
-                 
-                pst.executeUpdate();
-                
-                JOptionPane.showMessageDialog(this, "Record Addedd");
-                 
-                 
-                
-                
+                int price = Integer.parseInt(jTable1.getValueAt(i, 4).toString());
+                int total = Integer.parseInt(jTable1.getValueAt(i, 5).toString());
+
+                productPst.setInt(1,lastinsertid);
+                productPst.setString(2,item_id);
+                productPst.setInt(3,price);
+                productPst.setInt(4,qty1);
+                productPst.setInt(5,total);
+                productPst.executeUpdate();
+
+                stockPst.setInt(1, qty1);
+                stockPst.setString(2, item_id);
+                stockPst.executeUpdate();
             }
-            
-            
-        } catch (SQLException ex) {
+
+            con.commit();
+            JOptionPane.showMessageDialog(this, "Sale recorded");
+            DefaultTableModel df = (DefaultTableModel)jTable1.getModel();
+            df.setRowCount(0);
+            txtcost.setText("");
+            txtpay.setText("");
+            txtbal.setText("");
+            txtcode.requestFocus();
+        } catch (SQLException | NumberFormatException ex) {
+            try {
+                con.rollback();
+            } catch (SQLException rollbackEx) {
+                Logger.getLogger(Inventory.class.getName()).log(Level.SEVERE, null, rollbackEx);
+            }
             Logger.getLogger(Inventory.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "Sale could not be recorded. Please check the item and payment details.");
+        } finally {
+            try {
+                con.setAutoCommit(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(Inventory.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-        
-        
     }
             
 
@@ -178,9 +178,10 @@ public class Inventory extends javax.swing.JFrame {
         txtbal = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(0, 153, 204));
         jPanel1.setForeground(new java.awt.Color(240, 240, 240));
@@ -253,6 +254,14 @@ public class Inventory extends javax.swing.JFrame {
             }
         });
 
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Close.png"))); // NOI18N
+        jButton3.setText("Close");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 0));
         jLabel1.setText("Sales");
@@ -294,7 +303,9 @@ public class Inventory extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(62, 62, 62)
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(87, 87, 87)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -347,7 +358,8 @@ public class Inventory extends javax.swing.JFrame {
                         .addGap(42, 42, 42)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())
@@ -437,7 +449,7 @@ public class Inventory extends javax.swing.JFrame {
                 int tot = sellprice * qty;
                 
                 
-                if(qty >= currentqty )
+                if(qty > currentqty )
                 {
                     JOptionPane.showMessageDialog(this, "Avaliable Item" + currentqty);
                     JOptionPane.showMessageDialog(this, "Qty not Enough");
@@ -490,17 +502,33 @@ public class Inventory extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         
-        int pay = (Integer.parseInt(txtpay.getText()));
-        int totcost = (Integer.parseInt(txtcost.getText()));
-        
-        int bal = pay - totcost;
-        
-        
-        txtbal.setText(String.valueOf(bal));
-        
-       //sales();
+        if (jTable1.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(this, "Please add at least one item before updating sales.");
+            return;
+        }
+
+        if (txtpay.getText().trim().isEmpty() || txtcost.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter payment amount.");
+            return;
+        }
+
+        try {
+            int pay = Integer.parseInt(txtpay.getText().trim());
+            int totcost = Integer.parseInt(txtcost.getText().trim());
+
+            int bal = pay - totcost;
+            txtbal.setText(String.valueOf(bal));
+
+            sales();
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Payment amount must be a valid number.");
+        }
         
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {
+        this.setVisible(false);
+    }
 
     /**
      * @param args the command line arguments
@@ -540,6 +568,7 @@ public class Inventory extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

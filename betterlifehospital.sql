@@ -98,7 +98,7 @@ CREATE TABLE `item` (
 --
 
 INSERT INTO `item` (`itemid`, `itemname`, `description`, `sellprice`, `buyprice`, `qty`) VALUES
-('IT001', 'Napa', 'For Fever', 10, 8, 100),
+('IT001', 'Napa', 'For Fever', 10, 8, 98),
 ('IT002', 'Tufnil', 'For headache', 15, 12, 50),
 ('IT003', 'Adovas', 'For Cold', 50, 45, 40),
 ('IT004', 'Tofen', 'For Cold', 5, 2, 200);
@@ -124,6 +124,7 @@ INSERT INTO `patient` (`patientno`, `name`, `phone`, `address`) VALUES
 ('PS001', 'Shamim', 1785227997, '(Ca patient)Hatirjil,Dhaka'),
 ('PS002', 'Habib', 1683447997, '(Ca patient)Rampura,Dhaka'),
 ('PS003', 'Fahim', 1854665224, '(All patient) Rampura,Dhaka'),
+('PS004', 'Rafi', 1765442158, '(Der patient) Mohakhali,Dhaka'),
 ('PS005', 'Nimu', 1854662154, '(Gy patient) Bonani ,Dhaka'),
 ('PS006', 'Alvi', 1865442158, '(Ca patient) Gulsan,Dhaka');
 
@@ -162,6 +163,13 @@ CREATE TABLE `sales` (
   `balance` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `sales`
+--
+
+INSERT INTO `sales` (`id`, `date`, `subtotal`, `pay`, `balance`) VALUES
+(1, '2023-02-14', 20, 20, 0);
+
 -- --------------------------------------------------------
 
 --
@@ -176,6 +184,13 @@ CREATE TABLE `sale_product` (
   `qty` int(11) NOT NULL,
   `total` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `sale_product`
+--
+
+INSERT INTO `sale_product` (`id`, `sales_id`, `prod_id`, `sellprice`, `qty`, `total`) VALUES
+(1, 1, 'IT001', 10, 2, 20);
 
 -- --------------------------------------------------------
 
@@ -263,13 +278,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `sales`
 --
 ALTER TABLE `sales`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `sale_product`
 --
 ALTER TABLE `sale_product`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `user`

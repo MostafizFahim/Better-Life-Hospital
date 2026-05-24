@@ -85,26 +85,19 @@ public class Item extends javax.swing.JFrame {
             pst = con.prepareStatement("select * from item");
             rs = pst.executeQuery();
         
-        ResultSetMetaData Rsm = rs.getMetaData();
-        int c;
-        c = Rsm.getColumnCount();
-        
         DefaultTableModel df = (DefaultTableModel)jTable1.getModel();
         df.setRowCount(0);
         
         while(rs.next())
         {
             Vector v2 = new Vector();
-            
-            for(int i = 1;i<=c;i++)
-            {
-                v2.add(rs.getString("itemid"));
+
+            v2.add(rs.getString("itemid"));
             v2.add(rs.getString("itemname"));
             v2.add(rs.getString("description"));
             v2.add(rs.getString("sellprice")); 
             v2.add(rs.getString("buyprice")); 
             v2.add(rs.getString("qty")); 
-            }
             df.addRow(v2);
            
             
@@ -160,7 +153,7 @@ public class Item extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         jLabel5 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(0, 153, 204));
 
@@ -436,6 +429,10 @@ public class Item extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        if (jTable1.getSelectedRow() == -1) {
+            JOptionPane.showMessageDialog(this, "Please select an item first.");
+            return;
+        }
         
         String itemname = txtname.getText();
         String itemdes = txtdes.getText();
@@ -493,6 +490,10 @@ public class Item extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
+        if (jTable1.getSelectedRow() == -1) {
+            JOptionPane.showMessageDialog(this, "Please select an item first.");
+            return;
+        }
          
          String itemno = lblitemid.getText();
         
@@ -552,7 +553,7 @@ public class Item extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Patient().setVisible(true);
+                new Item().setVisible(true);
             }
         });
     }

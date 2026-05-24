@@ -58,25 +58,18 @@ public class viewPrescription extends javax.swing.JFrame {
             pst = con.prepareStatement("select * from prescription");
             rs = pst.executeQuery();
         
-        ResultSetMetaData Rsm = rs.getMetaData();
-        int c;
-        c = Rsm.getColumnCount();
-        
         DefaultTableModel df = (DefaultTableModel)jTable1.getModel();
         df.setRowCount(0);
         
         while(rs.next())
         {
             Vector v2 = new Vector();
-            
-            for(int i = 1;i<=c;i++)
-            {
-                v2.add(rs.getString("pid"));
+
+            v2.add(rs.getString("pid"));
             v2.add(rs.getString("channelid"));
             v2.add(rs.getString("doctorname"));
             v2.add(rs.getString("detype")); 
              v2.add(rs.getString("description")); 
-            }
             df.addRow(v2);
            
             
@@ -117,7 +110,7 @@ public class viewPrescription extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(0, 153, 204));
 
@@ -222,6 +215,11 @@ public class viewPrescription extends javax.swing.JFrame {
         // TODO add your handling code here:
         DefaultTableModel d1 = (DefaultTableModel)jTable1.getModel();
         int SelectedIndex = jTable1.getSelectedRow();
+
+        if (SelectedIndex == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a prescription first.");
+            return;
+        }
         
         String pid = d1.getValueAt(SelectedIndex,0).toString();
         

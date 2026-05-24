@@ -29,7 +29,9 @@ public class Doctor extends javax.swing.JFrame {
      */
     public Doctor() {
         initComponents();
-         
+        Connect();
+        AutoID();
+        Doctor_table();
        
         
     }
@@ -109,19 +111,13 @@ public class Doctor extends javax.swing.JFrame {
             //pst.setInt(1, newid);
             rs = pst.executeQuery();
         
-        ResultSetMetaData Rsm = rs.getMetaData();
-        int c;
-        c = Rsm.getColumnCount();
-        
         DefaultTableModel df = (DefaultTableModel)jTable1.getModel();
         df.setRowCount(0);
         
         while(rs.next())
         {
             Vector v2 = new Vector();
-            
-            for(int i = 1;i<=c;i++)
-            {
+
             v2.add(rs.getString("doctorno"));
             v2.add(rs.getString("name"));
             v2.add(rs.getString("special"));
@@ -129,7 +125,6 @@ public class Doctor extends javax.swing.JFrame {
             v2.add(rs.getString("channelfee"));
             v2.add(rs.getString("phone")); 
             v2.add(rs.getString("room")); 
-            }
             df.addRow(v2);
            
             
@@ -176,7 +171,7 @@ public class Doctor extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         jLabel5 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(0, 153, 204));
 
@@ -466,6 +461,11 @@ public class Doctor extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        if (jTable1.getSelectedRow() == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a doctor first.");
+            return;
+        }
+
         String dno = lbldno.getText();
         String dname = txtdname.getText();
         String spl = txtsp.getText();
@@ -528,6 +528,11 @@ public class Doctor extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
+        if (jTable1.getSelectedRow() == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a doctor first.");
+            return;
+        }
+
         String dno = lbldno.getText();
         
         
@@ -591,7 +596,7 @@ public class Doctor extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Patient().setVisible(true);
+                new Doctor().setVisible(true);
             }
         });
     }

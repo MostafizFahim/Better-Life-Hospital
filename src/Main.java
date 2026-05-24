@@ -93,9 +93,10 @@ public class Main extends javax.swing.JFrame {
            jButton4.setVisible(true);
            jButton5.setVisible(true);
            jButton6.setVisible(true);
-           jButton7.setVisible(true);
-           jButton8.setVisible(true);
-           jButton9.setVisible(true);
+          jButton7.setVisible(true);
+          jButton8.setVisible(true);
+          jButton9.setVisible(true);
+          jButton10.setVisible(true);
           }
         
         
@@ -310,7 +311,7 @@ public class Main extends javax.swing.JFrame {
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Main.jpg"))); // NOI18N
         jLabel6.setText("jLabel6");
 
-        jButton10.setText("Report");
+        jButton10.setText("Sales Report");
         jButton10.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton10ActionPerformed(evt);
@@ -392,7 +393,7 @@ public class Main extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
-        new ViewChannel1(idd).setVisible(true);
+        new ViewChannel1(idd, uctype).setVisible(true);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed

@@ -28,16 +28,24 @@ public class ViewChannel1 extends javax.swing.JFrame {
      */
     public ViewChannel1() {
         initComponents();
+        Connect();
+        Channel_table();
     }
     
     int id;
     int newid;
+    String usertype;
    
     
     public ViewChannel1(int id) {
+        this(id, "Doctor");
+    }
+
+    public ViewChannel1(int id, String utype) {
         initComponents();
         
         this.id=id;
+        this.usertype = utype;
         
         newid =id;
         Connect();
@@ -69,14 +77,18 @@ public class ViewChannel1 extends javax.swing.JFrame {
          public void Channel_table()
     {
         try {
-            pst = con.prepareStatement("select channel.channelno,doctor.name,patient.name,channel.roomno,channel.date from doctor INNER JOIN channel on channel.doctorname = doctor.doctorno INNER JOIN patient on channel.patientname = patient.patientno where doctor.log_id = ?");
-            pst.setInt(1, newid);
+            String query = "select channel.channelno,doctor.name,patient.name,channel.roomno,channel.date from doctor INNER JOIN channel on channel.doctorname = doctor.doctorno INNER JOIN patient on channel.patientname = patient.patientno";
+
+            if ("Doctor".equals(usertype)) {
+                query += " where doctor.log_id = ?";
+            }
+
+            pst = con.prepareStatement(query);
+            if ("Doctor".equals(usertype)) {
+                pst.setInt(1, newid);
+            }
             
             rs = pst.executeQuery();
-        
-        ResultSetMetaData Rsm = rs.getMetaData();
-        int c;
-        c = Rsm.getColumnCount();
         
         DefaultTableModel df = (DefaultTableModel)jTable1.getModel();
         df.setRowCount(0);
@@ -84,16 +96,12 @@ public class ViewChannel1 extends javax.swing.JFrame {
         while(rs.next())
         {
             Vector v2 = new Vector();
-            
-            for(int i = 1;i<=c;i++)
-            {
+
             v2.add(rs.getString(1));
             v2.add(rs.getString(2));
             v2.add(rs.getString(3));
             v2.add(rs.getString(4)); 
             v2.add(rs.getString(5));
-            
-            }
             df.addRow(v2);
            
             
@@ -121,7 +129,7 @@ public class ViewChannel1 extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(0, 153, 204));
 
@@ -216,6 +224,11 @@ public class ViewChannel1 extends javax.swing.JFrame {
         // TODO add your handling code here:
         DefaultTableModel d1 = (DefaultTableModel) jTable1.getModel();
         int selectedIndex = jTable1.getSelectedRow();
+
+        if (selectedIndex == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a channel first.");
+            return;
+        }
         
         String chno = d1.getValueAt(selectedIndex, 0).toString();
         String docname = d1.getValueAt(selectedIndex, 1).toString();
