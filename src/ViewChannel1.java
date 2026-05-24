@@ -90,26 +90,18 @@ public class ViewChannel1 extends javax.swing.JFrame {
             
             rs = pst.executeQuery();
         
-        ResultSetMetaData Rsm = rs.getMetaData();
-        int c;
-        c = Rsm.getColumnCount();
-        
         DefaultTableModel df = (DefaultTableModel)jTable1.getModel();
         df.setRowCount(0);
         
         while(rs.next())
         {
             Vector v2 = new Vector();
-            
-            for(int i = 1;i<=c;i++)
-            {
+
             v2.add(rs.getString(1));
             v2.add(rs.getString(2));
             v2.add(rs.getString(3));
             v2.add(rs.getString(4)); 
             v2.add(rs.getString(5));
-            
-            }
             df.addRow(v2);
            
             
@@ -137,7 +129,7 @@ public class ViewChannel1 extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(0, 153, 204));
 

@@ -311,7 +311,7 @@ public class Main extends javax.swing.JFrame {
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Main.jpg"))); // NOI18N
         jLabel6.setText("jLabel6");
 
-        jButton10.setText("Report");
+        jButton10.setText("Sales Report");
         jButton10.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton10ActionPerformed(evt);

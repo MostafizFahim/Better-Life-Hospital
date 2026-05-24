@@ -59,19 +59,13 @@ public class viewDoctor extends javax.swing.JFrame {
             
             rs = pst.executeQuery();
         
-        ResultSetMetaData Rsm = rs.getMetaData();
-        int c;
-        c = Rsm.getColumnCount();
-        
         DefaultTableModel df = (DefaultTableModel)jTable1.getModel();
         df.setRowCount(0);
         
         while(rs.next())
         {
             Vector v2 = new Vector();
-            
-            for(int i = 1;i<=c;i++)
-            {
+
             v2.add(rs.getString("doctorno"));
             v2.add(rs.getString("name"));
             v2.add(rs.getString("special"));
@@ -79,8 +73,6 @@ public class viewDoctor extends javax.swing.JFrame {
             v2.add(rs.getString("channelfee"));
             v2.add(rs.getString("phone"));
             v2.add(rs.getString("room"));
-            
-            }
             df.addRow(v2);
            
             
@@ -106,7 +98,7 @@ public class viewDoctor extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(0, 153, 204));
         jPanel1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));

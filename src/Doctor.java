@@ -29,7 +29,9 @@ public class Doctor extends javax.swing.JFrame {
      */
     public Doctor() {
         initComponents();
-         
+        Connect();
+        AutoID();
+        Doctor_table();
        
         
     }
@@ -109,19 +111,13 @@ public class Doctor extends javax.swing.JFrame {
             //pst.setInt(1, newid);
             rs = pst.executeQuery();
         
-        ResultSetMetaData Rsm = rs.getMetaData();
-        int c;
-        c = Rsm.getColumnCount();
-        
         DefaultTableModel df = (DefaultTableModel)jTable1.getModel();
         df.setRowCount(0);
         
         while(rs.next())
         {
             Vector v2 = new Vector();
-            
-            for(int i = 1;i<=c;i++)
-            {
+
             v2.add(rs.getString("doctorno"));
             v2.add(rs.getString("name"));
             v2.add(rs.getString("special"));
@@ -129,7 +125,6 @@ public class Doctor extends javax.swing.JFrame {
             v2.add(rs.getString("channelfee"));
             v2.add(rs.getString("phone")); 
             v2.add(rs.getString("room")); 
-            }
             df.addRow(v2);
            
             
@@ -176,7 +171,7 @@ public class Doctor extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         jLabel5 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(0, 153, 204));
 
